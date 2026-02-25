@@ -39,7 +39,7 @@ public class UserController {
     @PostMapping("/register")
     public String Register(@RequestBody User req) {
         try {
-            userService.Register(req);
+            userService.save(req);
             return "Registration Successful";
         } catch (Exception e) {
             return "Exception : " + e + " has occurred";
@@ -66,7 +66,7 @@ public class UserController {
         if (userInDb != null) {
             userInDb.setPassword(user.getPassword());
             userInDb.setUsername(user.getUsername());
-            userService.Register(userInDb);
+            userService.save(userInDb);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);

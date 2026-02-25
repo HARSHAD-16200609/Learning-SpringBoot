@@ -1,7 +1,9 @@
 package com.example.Journal.controller;
 
 import com.example.Journal.entity.JournalEntry;
+import com.example.Journal.entity.User;
 import com.example.Journal.service.JournalEntryService;
+import com.example.Journal.service.UserService;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,19 +22,23 @@ public class JournalEntryControllerv2 {
     @Autowired
     private JournalEntryService journalentryservice;
 
-    @GetMapping("/list")
-    public ResponseEntity<List<JournalEntry>> getAllJournals() {
+    @Autowired
+    private UserService userService;
 
-        List<JournalEntry> journals = journalentryservice.getAllJournals();
+    @GetMapping("/list/{username}")
+    public ResponseEntity<List<JournalEntry>> getAllJournalsofUser(@PathVariable String username) {
+
+        User user = userService.findByUsername(username);
+
+        List<JournalEntry> journals = user.getJournals();
 
         return new ResponseEntity(journals,HttpStatus.OK);
     }
 
-    @PostMapping("/create")
-    public ResponseEntity<JournalEntry> createJournal(@RequestBody JournalEntry journal) {
+    @PostMapping("/create/{username}")
+    public ResponseEntity<JournalEntry> createJournal(@RequestBody JournalEntry journal,@PathVariable String username) {
       try{
-          journal.setDate(LocalDateTime.now());
-          journalentryservice.saveJournal(journal);
+          journalentryservice.saveJournal(journal,username);
           return new ResponseEntity<>(journal,HttpStatus.CREATED);
       } catch (Exception e) {
           return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
@@ -73,21 +79,21 @@ catch(Exception e){
 
     }
 
-    @PutMapping("id/{journalId}")
-    public ResponseEntity<JournalEntry> UpdateJournal(@PathVariable ObjectId journalId, @RequestBody JournalEntry newEntry) {
-     try{
-         JournalEntry old = journalentryservice.getJournal(journalId).orElse(null);
-
-         if( old != null){
-             old.setTitle(newEntry.getTitle() !=null && !newEntry.getTitle().equals("") ? newEntry.getTitle() : old.getTitle());
-             old.setContent(newEntry.getContent() !=null && !newEntry.getContent().equals("") ? newEntry.getContent() : old.getContent());
-         }
-         journalentryservice.saveJournal(old);
-         return new ResponseEntity<>(old,HttpStatus.OK);
-     }
-     catch(Exception e){
-         return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
-     }
-
-    }
+//    @PutMapping("id/{journalId}")
+//    public ResponseEntity<JournalEntry> UpdateJournal(@PathVariable ObjectId journalId, @RequestBody JournalEntry newEntry) {
+//     try{
+//         JournalEntry old = journalentryservice.getJournal(journalId).orElse(null);
+//
+//         if( old != null){
+//             old.setTitle(newEntry.getTitle() !=null && !newEntry.getTitle().equals("") ? newEntry.getTitle() : old.getTitle());
+//             old.setContent(newEntry.getContent() !=null && !newEntry.getContent().equals("") ? newEntry.getContent() : old.getContent());
+//         }
+//         journalentryservice.saveJournal(old);
+//         return new ResponseEntity<>(old,HttpStatus.OK);
+//     }
+//     catch(Exception e){
+//         return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+//     }
+//
+//    }
 }
