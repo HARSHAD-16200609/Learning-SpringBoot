@@ -60,11 +60,12 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PutMapping
-    public ResponseEntity<?> updatePassword(@RequestBody User user) {
-        User userInDb = userService.findByUsername(user.getUsername());
+    @PutMapping("/{username}")
+    public ResponseEntity<?> updatePassword(@RequestBody User user,@PathVariable String username) {
+        User userInDb = userService.findByUsername(username);
         if (userInDb != null) {
             userInDb.setPassword(user.getPassword());
+            userInDb.setUsername(user.getUsername());
             userService.Register(userInDb);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
