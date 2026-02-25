@@ -1,7 +1,8 @@
 package com.example.Journal.service;
 
 import com.example.Journal.Repository.JournalEntryRepository;
-import com.example.Journal.entity.JournalEntry;
+import com.example.Journal.Repository.UserRepository;
+import com.example.Journal.entity.User;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -12,20 +13,21 @@ import java.util.Optional;
 @Component
 public class UserService {
     @Autowired
-    private JournalEntryRepository JournalEntryRepository;
+    private UserRepository userRepository;
 
-    public void saveJournal(JournalEntry journal) {
-        JournalEntryRepository.save(journal);
+    public void Register(User user) {
+        userRepository.save(user);
+
     }
 
-    public List<JournalEntry> getAllJournals() {
-        return JournalEntryRepository.findAll();
+     public User findByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
     }
-    public Optional<JournalEntry> getJournal(ObjectId Id) {
-        return JournalEntryRepository.findById(Id);
-    }
-    public void DeleteJournal(ObjectId Id) {
-         JournalEntryRepository.deleteById(Id);
+
+    public void DelUser(ObjectId Id) {
+        userRepository.deleteById(Id);
+
     }
 
 }
