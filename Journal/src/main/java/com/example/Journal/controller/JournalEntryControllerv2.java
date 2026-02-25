@@ -61,11 +61,14 @@ catch(Exception e){
 
     }
 
-    @DeleteMapping("id/{journalId}")
-    public ResponseEntity<?> DeleteJournal(@PathVariable ObjectId journalId) {
+    @DeleteMapping("id/{journalId}/{username}")
+    public ResponseEntity<?> DeleteJournal(@PathVariable ObjectId journalId,@PathVariable String username) {
         try{
             Optional<JournalEntry> journal = journalentryservice.getJournal(journalId);
+            User user = userService.findByUsername(username);
 
+            user.getJournals().remove(journalId);
+            userService.save(user);
             if (journal.isPresent()) {
                 journalentryservice.DeleteJournal(journalId);
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -79,21 +82,21 @@ catch(Exception e){
 
     }
 
-//    @PutMapping("id/{journalId}")
-//    public ResponseEntity<JournalEntry> UpdateJournal(@PathVariable ObjectId journalId, @RequestBody JournalEntry newEntry) {
-//     try{
-//         JournalEntry old = journalentryservice.getJournal(journalId).orElse(null);
-//
-//         if( old != null){
-//             old.setTitle(newEntry.getTitle() !=null && !newEntry.getTitle().equals("") ? newEntry.getTitle() : old.getTitle());
-//             old.setContent(newEntry.getContent() !=null && !newEntry.getContent().equals("") ? newEntry.getContent() : old.getContent());
-//         }
-//         journalentryservice.saveJournal(old);
-//         return new ResponseEntity<>(old,HttpStatus.OK);
-//     }
-//     catch(Exception e){
-//         return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
-//     }
-//
-//    }
+    @PutMapping("id/{journalId}")
+    public ResponseEntity<JournalEntry> UpdateJournal(@PathVariable ObjectId journalId, @RequestBody JournalEntry newEntry) {
+     try{
+         JournalEntry old = journalentryservice.getJournal(journalId).orElse(null);
+
+         if( old != null){
+             old.setTitle(newEntry.getTitle() !=null && !newEntry.getTitle().equals("") ? newEntry.getTitle() : old.getTitle());
+             old.setContent(newEntry.getContent() !=null && !newEntry.getContent().equals("") ? newEntry.getContent() : old.getContent());
+         }
+         journalentryservice.saveJournal(old);
+         return new ResponseEntity<>(old,HttpStatus.OK);
+     }
+     catch(Exception e){
+         return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+     }
+
+    }
 }
