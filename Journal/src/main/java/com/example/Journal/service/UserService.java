@@ -20,14 +20,15 @@ public class UserService {
 
     }
 
-     public User findByUsername(String username) {
-        return userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username).orElse(null);
     }
 
     public void DelUser(ObjectId Id) {
         userRepository.deleteById(Id);
-
     }
 
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
 }
