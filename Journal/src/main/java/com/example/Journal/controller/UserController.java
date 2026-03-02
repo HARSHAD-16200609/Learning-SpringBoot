@@ -20,7 +20,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/login")
+    @PostMapping("auth/login")
     public String login(@RequestBody User req) {
 
         User optionalUser = userService.findByUsername(req.getUsername());
@@ -36,7 +36,7 @@ public class UserController {
         return "Invalid credentials";
     }
 
-    @PostMapping("/register")
+    @PostMapping("auth/register")
     public String Register(@RequestBody User req) {
         try {
             userService.save(req);
