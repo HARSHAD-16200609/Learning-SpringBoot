@@ -8,6 +8,7 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -18,18 +19,22 @@ import java.util.Optional;
 @RequestMapping("/user")
 public class UserController {
     @Autowired
+private PasswordEncoder passwordEncoder;
+    @Autowired
     private UserService userService;
 
     @PostMapping("auth/login")
     public String login(@RequestBody User req) {
 
         User optionalUser = userService.findByUsername(req.getUsername());
-
+          if(optionalUser.getPassword() == "") {
+              System.out.println("validate");
+          }
         if (optionalUser == null) {
             return "Invalid credentials";
         }
 
-        if (optionalUser.getPassword().equals(req.getPassword())) {
+       if (passwordEncoder.matches(req.getPassword(), optionalUser.getPassword())) {
             return "Login Successful";
         }
 
@@ -39,6 +44,7 @@ public class UserController {
     @PostMapping("auth/register")
     public String Register(@RequestBody User req) {
         try {
+
             userService.save(req);
             return "Registration Successful";
         } catch (Exception e) {
