@@ -19,11 +19,16 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    // Use for new user registration only - encodes password
     public void save(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRoles(Arrays.asList("USER"));
         userRepository.save(user);
+    }
 
+    // Use for updating existing users - does NOT re-encode password
+    public void saveUserForUpdate(User user) {
+        userRepository.save(user);
     }
 
     public User findByUsername(String username) {

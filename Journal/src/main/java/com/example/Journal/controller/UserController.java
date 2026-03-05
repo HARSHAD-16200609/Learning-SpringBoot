@@ -21,7 +21,7 @@ import java.util.Optional;
 @RequestMapping("/user")
 public class UserController {
     @Autowired
-private PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
     @Autowired
     private UserService userService;
 
@@ -34,7 +34,7 @@ private PasswordEncoder passwordEncoder;
         if (optionalUser == null) {
             return "Invalid credentials";
         }
-            return "Login Successful";
+        return "Login Successful";
     }
 
     @PostMapping("auth/register")
@@ -72,9 +72,13 @@ private PasswordEncoder passwordEncoder;
         User userInDb = userService.findByUsername(Username);
 
         if (userInDb != null) {
-            userInDb.setPassword(user.getPassword());
-            userInDb.setUsername(user.getUsername());
-            userService.save(userInDb);
+            if (user.getUsername() != null && !user.getUsername().isBlank()) {
+                userInDb.setUsername(user.getUsername());
+            }
+            if (user.getPassword() != null && !user.getPassword().isBlank()) {
+                userInDb.setPassword(passwordEncoder.encode(user.getPassword()));
+            }
+            userService.saveUserForUpdate(userInDb);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
