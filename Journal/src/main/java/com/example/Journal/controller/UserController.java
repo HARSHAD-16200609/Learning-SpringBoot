@@ -8,6 +8,8 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,21 +26,15 @@ private PasswordEncoder passwordEncoder;
     private UserService userService;
 
     @PostMapping("auth/login")
-    public String login(@RequestBody User req) {
+    public String login() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String Username = authentication.getName();
+        User optionalUser = userService.findByUsername(Username);
 
-        User optionalUser = userService.findByUsername(req.getUsername());
-          if(optionalUser.getPassword() == "") {
-              System.out.println("validate");
-          }
         if (optionalUser == null) {
             return "Invalid credentials";
         }
-
-       if (passwordEncoder.matches(req.getPassword(), optionalUser.getPassword())) {
             return "Login Successful";
-        }
-
-        return "Invalid credentials";
     }
 
     @PostMapping("auth/register")
@@ -57,18 +53,24 @@ private PasswordEncoder passwordEncoder;
         return userService.getAllUsers();
     }
 
-    @GetMapping("/{username}")
-    public ResponseEntity<User> getUserByUsername(@PathVariable String username) {
-        User user = userService.findByUsername(username);
+    @GetMapping("me")
+    public ResponseEntity<User> getUserByUsername() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String Username = authentication.getName();
+        User user = userService.findByUsername(Username);
+
         if (user != null) {
             return new ResponseEntity<>(user, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PutMapping("/{username}")
-    public ResponseEntity<?> updatePassword(@RequestBody User user,@PathVariable String username) {
-        User userInDb = userService.findByUsername(username);
+    @PutMapping("/updateUser")
+    public ResponseEntity<?> updatePassword(@RequestBody User user) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String Username = authentication.getName();
+        User userInDb = userService.findByUsername(Username);
+
         if (userInDb != null) {
             userInDb.setPassword(user.getPassword());
             userInDb.setUsername(user.getUsername());
@@ -78,8 +80,10 @@ private PasswordEncoder passwordEncoder;
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @DeleteMapping("/{username}")
-    public ResponseEntity<?> deleteUser(@PathVariable String username) {
+    @DeleteMapping("/delUser")
+    public ResponseEntity<?> deleteUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
         User userInDb = userService.findByUsername(username);
         if (userInDb != null) {
             userService.DelUser(userInDb.getID());
