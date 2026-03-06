@@ -4,6 +4,8 @@ import com.example.Journal.Repository.UserRepository;
 import com.example.Journal.entity.User;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -26,4 +28,17 @@ public class userServiceTest {
         assertNotNull(user);// Optional test to ensure the extracted user object is indeed not null
         assertTrue(!user.getJournals().isEmpty());
     }
+
+    @ParameterizedTest
+    @CsvSource({
+            "1,2,3",
+            "5,6,8",
+            "5,2,8",
+            "2,9,4",
+            "1,4,5"
+    })
+    public void parameterizedTest(int a , int b , int expected){
+        assertEquals(expected,a+b); // result 2 pass 3 fail
+    }
+
 }
