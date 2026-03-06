@@ -39,6 +39,21 @@ public class userServiceTest {
     })
     public void parameterizedTest(int a , int b , int expected){
         assertEquals(expected,a+b); // result 2 pass 3 fail
+        
+    }
+    @ParameterizedTest
+    @CsvSource({
+            "Askelaad..",
+            "Askelaad.",
+            "harshad",
+            "admin"
+    })
+    public void findUsers(String username){
+        Optional<User> userOptional = userRepository.findByUsername(username);
+        assertTrue(userOptional.isPresent());
+        System.out.println(userOptional.isPresent());
+        User user = userOptional.get();
+        assertFalse(user.getJournals().isEmpty());
     }
 
 }
