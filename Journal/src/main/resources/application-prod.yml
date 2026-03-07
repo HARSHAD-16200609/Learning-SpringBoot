@@ -1,0 +1,13 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb+srv://diwateharshad543_db_user:iJk86aimP6d3xg2z@03-task-manager.bwnxps0.mongodb.net/Journals?appName=03-Task-Manager
+      auto-index-creation: true
+
+  application:
+    name: Journal
+
+server:
+  port: 8082
+  servlet:
+    context-path: /api/v1
