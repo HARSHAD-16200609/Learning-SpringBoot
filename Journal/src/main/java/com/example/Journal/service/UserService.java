@@ -3,6 +3,7 @@ package com.example.Journal.service;
 import com.example.Journal.Repository.JournalEntryRepository;
 import com.example.Journal.Repository.UserRepository;
 import com.example.Journal.entity.User;
+import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,13 +16,14 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
+@Slf4j // now no need to write the code to instantiate the logger
 public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
     private UserRepository userRepository;
 
-    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
+
 
     // Use for new user registration only - encodes password
     public void save(User user) throws Exception {
@@ -31,7 +33,7 @@ public class UserService {
             userRepository.save(user);
         }
       catch(Exception e){
-            logger.error("Error occured for user {}",user.getUsername(),e); // {} are placeholders we can insert data into it here the username is inserted in the log along with the error
+            log.error("Error occured for user {}",user.getUsername(),e); // {} are placeholders we can insert data into it here the username is inserted in the log along with the error
           throw new Exception(e);
       }
     }
