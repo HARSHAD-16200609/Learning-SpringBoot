@@ -8,8 +8,30 @@
     </appender>
 
 
-    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-        <file>logs/journal.log</file>
+    <!--  file Appender doesn't save in rotation meaning it doent save in different files only the same file only-->
+    <!--    we can achieve rotaing log generation based on file sixe time  using rolling file appender-->
+
+<!--    <appender name="FILE" class="ch.qos.logback.core.FileAppender">-->
+
+        <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+            <!--address of log file to be saved in linux our server we saave it in home directory Logs Folder-->
+            <file>logs/journalApp.log</file>
+
+            <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+
+<!--                this pattern makes log file every minute-->
+                <fileNamePattern>logs/journalApp-%d{yy-MM-dd_HH-mm}.%i.log</fileNamePattern>
+
+<!--                makes new file after 10mb threshhold crossed-->
+<maxFileSize>10MB</maxFileSize>
+
+<!--                deletes the first file after  10 files threshhold passed-->
+                <maxHistory>10</maxHistory>
+
+            </rollingPolicy>
+
+
 
         <encoder>
             <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
