@@ -5,19 +5,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.config.Customizer;
 
 @Configuration
 @EnableWebSecurity
-@Profile("dev")
-public class SpringSecurity {
+@Profile("prod")
+public class SpringSecurityprod {
 
     @Autowired
     private UserServiceDetailsimpl userServiceDetailsimpl;
@@ -29,7 +28,7 @@ public class SpringSecurity {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/user/auth/**").permitAll()
-                        .requestMatchers("/HealthCheck").permitAll()
+                        .requestMatchers("/HealthCheck").authenticated()
                         .requestMatchers("/api/**").authenticated()
                         .requestMatchers("/Journal/**").authenticated()
                         .anyRequest().authenticated())
