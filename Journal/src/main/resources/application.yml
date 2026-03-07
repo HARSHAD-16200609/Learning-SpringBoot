@@ -2,14 +2,34 @@ spring:
   profiles:
     active: dev
 
-logging:
-  level:
-    com:
-      example:
-        Journal: DEBUG  // level here and below are shown
-
+#logging:
+#  level:
+#    com:
+#      example:
+#        Journal: DEBUG
+#    // level here and below are shown
 
         # standard level trace->info->debug->warn->error
+
+
+# this gives an project wide config to print only errorlogs not even the starting default springboot logs
+#logging:
+#  level:
+#   root: ERROR / OFF->disables the logs
+#
+
+
+# we can also add log to individual classes
+#logging:
+#  level:
+#    com:
+#      example:
+#        Journal:
+#          service:
+#            UserService: ERROR
+
+# standard practice use logback.xml file
+
 
 
 #priority 1) terminal args using java -jar jarfile in target --property=value

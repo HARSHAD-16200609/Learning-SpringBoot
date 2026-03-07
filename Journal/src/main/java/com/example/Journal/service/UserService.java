@@ -34,8 +34,6 @@ public class UserService {
         }
       catch(Exception e){
             log.error("ERROR occured for user {}",user.getUsername(),e);    // {} are placeholders we can insert data into it here the username is inserted in the log along with the error
-          log.warn("WARN occured for user {}",user.getUsername(),e);
-          log.debug("DEBUG this error occured for user {}",user.getUsername(),e);
           throw new Exception(e);
       }
     }
