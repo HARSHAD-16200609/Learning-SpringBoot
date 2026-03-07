@@ -2,6 +2,15 @@ spring:
   profiles:
     active: dev
 
+logging:
+  level:
+    com:
+      example:
+        Journal: DEBUG  // level here and below are shown
+
+
+        # standard level trace->info->debug->warn->error
+
 
 #priority 1) terminal args using java -jar jarfile in target --property=value
 #         2) application.properties
