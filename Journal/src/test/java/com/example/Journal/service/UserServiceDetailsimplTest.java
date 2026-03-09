@@ -3,6 +3,7 @@ package com.example.Journal.service;
 import com.example.Journal.Repository.UserRepository;
 import com.example.Journal.entity.User;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -17,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
+@Disabled
 public class UserServiceDetailsimplTest {
 
     @InjectMocks

@@ -4,6 +4,7 @@ import com.example.Journal.entity.JournalEntry;
 import com.example.Journal.entity.User;
 import com.example.Journal.service.JournalEntryService;
 import com.example.Journal.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/journal")
+@Slf4j
 public class JournalEntryControllerv2 {
 
     @Autowired
@@ -31,7 +33,7 @@ public class JournalEntryControllerv2 {
         User user = userService.findByUsername(Username);
 
         List<JournalEntry> journals = user.getJournals();
-
+        log.info("Fetched {} journal entries for user {}", journals.size(), Username);
         return new ResponseEntity(journals, HttpStatus.OK);
     }
 
@@ -41,8 +43,10 @@ public class JournalEntryControllerv2 {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String Username = authentication.getName();
             journalentryservice.saveJournal(journal, Username);
+            log.info("Journal created successfully for user {}", Username);
             return new ResponseEntity<>(journal, HttpStatus.CREATED);
         } catch (Exception e) {
+            log.error("Failed to create journal for user ", e);
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
@@ -54,24 +58,28 @@ public class JournalEntryControllerv2 {
             if (journal.isPresent()) {
                 return new ResponseEntity<>(journal.get(), HttpStatus.OK);
             }
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND); // only works if the given id is an objectid
-                                                                     // strictly just that it is not present in our
-                                                                     // database if random string theren 400 status
+            log.warn("Journal not found for id {}", journalId);
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            // only works if the given id is an objectid
+            // strictly just that it is not present in our
+            // database if random string theren 400 status
 
         } catch (Exception e) {
+            log.warn("Unauthorized Request",e);
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
 
     }
 
     @DeleteMapping("id/{journalId}")
-    public ResponseEntity<?> DeleteJournal(@PathVariable ObjectId journalId) {
+    public ResponseEntity<JournalEntry> DeleteJournal(@PathVariable ObjectId journalId) {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String username = authentication.getName();
             journalentryservice.DeleteJournal(journalId, username);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception e) {
+            log.error("Failed to delete journal {} for user ", journalId, e);
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -92,6 +100,7 @@ public class JournalEntryControllerv2 {
             journalentryservice.saveJournal(old);
             return new ResponseEntity<>(old, HttpStatus.OK);
         } catch (Exception e) {
+            log.error("ERRROR OCCCURED UPDATING",e);
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
 

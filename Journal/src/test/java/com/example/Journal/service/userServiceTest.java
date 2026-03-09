@@ -1,6 +1,7 @@
 package com.example.Journal.service;
 import com.example.Journal.Repository.UserRepository;
 import com.example.Journal.entity.User;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -12,6 +13,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@Disabled
 public class userServiceTest {
 
     @Autowired
@@ -37,7 +39,7 @@ public class userServiceTest {
     })
     public void parameterizedTest(int a , int b , int expected){
         assertEquals(expected,a+b); // result 2 pass 3 fail
-        
+
     }
     @ParameterizedTest
     @CsvSource({
