@@ -17,12 +17,16 @@ public class JournalApplication {
 	}
 
 	@Bean
-	public PlatformTransactionManager transaction(MongoDatabaseFactory dbfactory){
+	public PlatformTransactionManager transaction(MongoDatabaseFactory dbfactory) {
 		return new MongoTransactionManager(dbfactory);
+	}
+
+	@Bean
+	public org.springframework.web.client.RestTemplate restTemplate() {
+		return new org.springframework.web.client.RestTemplate();
 	}
 
 }
 
-
-//PlatformTransactionManager
-//MongoTransactionManager implements the PlatformTransactionManager interface
+// PlatformTransactionManager
+// MongoTransactionManager implements the PlatformTransactionManager interface

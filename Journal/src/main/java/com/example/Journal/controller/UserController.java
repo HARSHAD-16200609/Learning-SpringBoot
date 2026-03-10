@@ -1,10 +1,8 @@
 package com.example.Journal.controller;
 
-import com.example.Journal.Repository.UserRepository;
+import com.example.Journal.apiResponse.weatherResponse;
 import com.example.Journal.entity.User;
-import com.example.Journal.service.JournalEntryService;
 import com.example.Journal.service.UserService;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,13 +11,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/user")
 public class UserController {
+    @Autowired
+    WeatherService weatherService;
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
@@ -92,6 +90,22 @@ public class UserController {
         if (userInDb != null) {
             userService.DelUser(userInDb.getID());
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/greeting")
+    public ResponseEntity<?> greeting() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        User userInDb = userService.findByUsername(username);
+        weatherResponse res = weatherService.getWeather("mumbai");
+        if (userInDb != null && res != null) {
+            String weatherDescription = "";
+            if (res.getWeather() != null && !res.getWeather().isEmpty()) {
+                weatherDescription = res.getWeather().get(0).getDescription();
+            }
+            return new ResponseEntity<>("Hii " + username + " Today's weather is " + weatherDescription, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
