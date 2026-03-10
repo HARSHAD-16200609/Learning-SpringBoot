@@ -1,5 +1,6 @@
 package com.example.Journal.controller;
 
+import com.example.Journal.apiResponse.quoteResponse;
 import com.example.Journal.apiResponse.weatherResponse;
 import com.example.Journal.entity.User;
 import com.example.Journal.service.UserService;
@@ -16,6 +17,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/user")
 public class UserController {
+    @Autowired
+    QuoteService quoteService;
     @Autowired
     WeatherService weatherService;
     @Autowired
@@ -100,12 +103,16 @@ public class UserController {
         String username = authentication.getName();
         User userInDb = userService.findByUsername(username);
         weatherResponse res = weatherService.getWeather("mumbai");
+        quoteResponse quoteData = quoteService.getQuote();
         if (userInDb != null && res != null) {
             String weatherDescription = "";
             if (res.getWeather() != null && !res.getWeather().isEmpty()) {
                 weatherDescription = res.getWeather().get(0).getDescription();
             }
-            return new ResponseEntity<>("Hii " + username + " Today's weather is " + weatherDescription, HttpStatus.OK);
+            String quoteText = quoteData != null ? quoteData.getQuote() : "No quote available";
+            String quoteAuthor = quoteData != null ? quoteData.getAuthor() : "Unknown";
+            return new ResponseEntity<>("Hii " + username + " Today's weather is " + weatherDescription
+                    + "\n Todays Quote : " + quoteText + "\n - " + quoteAuthor, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
