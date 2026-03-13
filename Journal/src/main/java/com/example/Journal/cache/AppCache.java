@@ -9,6 +9,9 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import jakarta.annotation.PostConstruct;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Component
@@ -16,7 +19,7 @@ public class AppCache {
 
     @Autowired
     configJournalApp configjournalApp;
-    public Map<String, String> appcache;
+    public Map<String, String> APP_CACHE;
 
     public configjournalappEntity save(configjournalappEntity cfge) {
 
@@ -26,8 +29,13 @@ public class AppCache {
         return cfge;
     }
 
+    @PostConstruct
     public void init() {
-        appcache = null;
+        APP_CACHE = new HashMap<>();
+        List<configjournalappEntity> all = configjournalApp.findAll();
+        for (configjournalappEntity entity : all) {
+            APP_CACHE.put(entity.getKey(), entity.getValue());
+        }
     }
 
 }

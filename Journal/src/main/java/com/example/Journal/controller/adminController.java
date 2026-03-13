@@ -1,5 +1,6 @@
 package com.example.Journal.controller;
 
+import com.example.Journal.cache.AppCache;
 import com.example.Journal.entity.User;
 import com.example.Journal.service.UserService;
 import org.apache.coyote.Response;
@@ -21,6 +22,9 @@ public class adminController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    AppCache appcache;
+
     @GetMapping("/allUsers")
     public ResponseEntity<?> getAllUserS() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -37,5 +41,16 @@ public class adminController {
 
         return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
 
+    }
+
+    @GetMapping("clear-app-cache")
+    public void clearCache() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String Username = authentication.getName();
+        User user = userService.findByUsername(Username);
+
+        if (user.getRoles().contains("ADMIN")) {
+            appcache.init();
+        }
     }
 }
