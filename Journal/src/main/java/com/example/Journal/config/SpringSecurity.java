@@ -30,6 +30,7 @@ public class SpringSecurity {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/user/auth/**").permitAll()
                         .requestMatchers("/HealthCheck").permitAll()
+                        .requestMatchers("/cache/**").permitAll()
                         .requestMatchers("/api/**").authenticated()
                         .requestMatchers("/Journal/**").authenticated()
                         .anyRequest().authenticated())
