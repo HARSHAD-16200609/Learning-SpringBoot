@@ -1,5 +1,6 @@
 package com.example.Journal.service;
 import com.example.Journal.Repository.UserRepository;
+import com.example.Journal.Repository.userRepositoryImpl;
 import com.example.Journal.entity.User;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -8,16 +9,18 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-@Disabled
 public class userServiceTest {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    userRepositoryImpl userRepositoryimpl;
 
     @Test
     public void testFindByUsername() {
@@ -55,5 +58,12 @@ public class userServiceTest {
         User user = userOptional.get();
         assertFalse(user.getJournals().isEmpty());
     }
+
+    @Test
+    public void getUserforSA(){
+        userRepositoryimpl.getUserforSA();
+
+    }
+
 
 }
