@@ -61,7 +61,11 @@ public class userServiceTest {
 
     @Test
     public void getUserforSA(){
-        userRepositoryimpl.getUserforSA();
+
+        List<User> users= userRepositoryimpl.getUserforSA();
+        for(User user : users){
+            System.out.println(user);
+        }
 
     }
 
