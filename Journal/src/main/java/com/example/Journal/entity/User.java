@@ -1,5 +1,6 @@
 package com.example.Journal.entity;
 
+import com.example.Journal.enums.SentimentEnums;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -25,6 +26,7 @@ public class User {
     private boolean sentimentalAnalysis;
     @NonNull
     private String password;
+
     @DBRef
     private List<JournalEntry> Journals = new ArrayList<>();
 
