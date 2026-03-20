@@ -1,27 +1,25 @@
 package com.example.Journal.service;
 
-import org.junit.jupiter.api.Disabled;
+import com.example.Journal.apiResponse.weatherResponse;
+import com.example.Journal.controller.WeatherService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.redis.core.RedisTemplate;
-
 
 @SpringBootTest
 public class RedisTest {
 
     @Autowired
-    private RedisTemplate redisTemplate;
+    private RedisService redisService;
 
-    @Disabled
+    @Autowired
+    private WeatherService weatherService;
+
     @Test
-    void testsendEmail(){
-        redisTemplate.opsForValue().set("email","email@gmail.com");
-        Object email = redisTemplate.opsForValue().get("email");
-        Object name = redisTemplate.opsForValue().get("name");
-        int a = 1;
+    void testWeatherCache() {
+        weatherResponse res = weatherService.getWeather("Mumbai");
+        System.out.println("First call API: " + (res != null));
+        weatherResponse res2 = weatherService.getWeather("Mumbai");
+        System.out.println("Second call CACHE: " + (res2 != null));
     }
-
-
-
 }

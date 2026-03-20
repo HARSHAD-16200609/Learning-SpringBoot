@@ -102,7 +102,7 @@ public class UserController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         User userInDb = userService.findByUsername(username);
-        weatherResponse res = weatherService.getWeather("mumbai");
+        weatherResponse res = weatherService.getWeather("delhi");
         quoteResponse quoteData = quoteService.getQuote();
         if (userInDb != null && res != null) {
             String weatherDescription = "";
