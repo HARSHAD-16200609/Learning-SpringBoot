@@ -6,6 +6,7 @@ import com.example.Journal.apiResponse.weatherResponse;
 import com.example.Journal.entity.User;
 import com.example.Journal.service.UserService;
 import com.example.Journal.service.UserServiceDetailsimpl;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/user")
 @Slf4j
+@Tag(name = "User APIs", description = "Read, Update & Delete User")
 public class UserController {
     @Autowired
     QuoteService quoteService;

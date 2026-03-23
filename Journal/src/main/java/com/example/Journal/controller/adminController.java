@@ -3,6 +3,7 @@ package com.example.Journal.controller;
 import com.example.Journal.cache.AppCache;
 import com.example.Journal.entity.User;
 import com.example.Journal.service.UserService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties;
@@ -18,6 +19,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/admin")
+@Tag(name = "Admin APIs")
 public class adminController {
     @Autowired
     UserService userService;

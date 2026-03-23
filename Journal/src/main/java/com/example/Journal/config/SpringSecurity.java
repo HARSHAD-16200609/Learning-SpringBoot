@@ -36,6 +36,7 @@ public class SpringSecurity {
                         .requestMatchers("/user/auth/**").permitAll()
                         .requestMatchers("/HealthCheck").permitAll()
                         .requestMatchers("/cache/**").permitAll()
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()
                         .requestMatchers("/api/**").authenticated()
                         .requestMatchers("/Journal/**").authenticated()
                         .anyRequest().authenticated())
