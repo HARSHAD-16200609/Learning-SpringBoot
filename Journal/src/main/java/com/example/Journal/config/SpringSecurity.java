@@ -39,7 +39,7 @@ public class SpringSecurity {
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()
                         .requestMatchers("/api/**").authenticated()
                         .requestMatchers("/Journal/**").authenticated()
-                        .anyRequest().authenticated())
+                        .anyRequest().permitAll())
                 .userDetailsService(userServiceDetailsimpl)
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
