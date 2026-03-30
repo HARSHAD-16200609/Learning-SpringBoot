@@ -1,5 +1,3 @@
-
-
 public class World extends Thread {
 
    World(String name){
@@ -9,14 +7,13 @@ public class World extends Thread {
 
     @Override
     public void run(){
-       try{
 
-      Thread.sleep(1000);
-           System.out.println("Thread is running");
-       }catch(InterruptedException e){
-           System.out.println("Thread Interupted "+ e);
-       }
+
+        while(true) {
+            System.out.println(Thread.currentThread().getName() + " is running");
+            Thread.yield(); // hints jvm that the thread is willing to relenquish the control}
+
+        }
     }
-
 
 }
