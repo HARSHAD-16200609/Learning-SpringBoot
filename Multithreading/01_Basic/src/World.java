@@ -2,20 +2,20 @@
 
 public class World extends Thread {
 
-   public long start;
-   public long end;
-   public long total;
-   World(long start, long end){
-       this.start = start;
-       this.end = end;
+   World(String name){
+   super(name);
 
    }
 
     @Override
     public void run(){
-        for (long i = start ; i < end ;i++){
-             total+=i;
-        }
+       try{
+
+      Thread.sleep(1000);
+           System.out.println("Thread is running");
+       }catch(InterruptedException e){
+           System.out.println("Thread Interupted "+ e);
+       }
     }
 
 
