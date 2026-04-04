@@ -5,7 +5,10 @@ import java.util.concurrent.locks.ReentrantLock;
 public class Bank {
     static int balance = 1000;
 
-    private static Lock lock = new ReentrantLock();
+    private Bank(){
+
+    }
+    private static Lock lock = new ReentrantLock(true); // makes the variable acessing by threads fair similar to synchronize no  starvation
 
     public static void withdraw(int ammount) {
 
@@ -18,7 +21,8 @@ public class Bank {
                 // therefore we used custom locks
 
             } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+                System.out.println("Thread was interupted");
+                Thread.currentThread().interrupt();
             }
             balance -= ammount;
             System.out.println(Thread.currentThread().getName() + " Withdrawn " + ammount);
@@ -39,7 +43,9 @@ public class Bank {
                     try {
                         Thread.sleep(1000); // simulate delay
                     } catch (InterruptedException e) {
-                        Thread.currentThread().interrupt();
+                        Thread.currentThread().interrupt(); // this is done to set the interupt true for the thread the thread still runs fine.
+//                        but we don't know the event ocuured to avoid this and use  the thread.isinterrupted() method to check if the thread was interupted or not and handle it accordingly
+//                        we need to add the curretnthread.interupt to the thread in exception handling
                     }
 
                     balance -= amount;
