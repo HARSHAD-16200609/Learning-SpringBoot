@@ -5,16 +5,13 @@ public class Counter {
 
     }
     public  void  count(){
-        synchronized(this){ // this is uded to synchronize an particular block of code
-
+        synchronized(this){
+            // this is used to synchronize an particular block of code
         count++;
         }
     }
     public int getCount() {
         return count;
     }
-
-
-
 
 }
