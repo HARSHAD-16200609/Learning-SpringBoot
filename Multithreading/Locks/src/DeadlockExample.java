@@ -43,7 +43,7 @@ class Task2 implements Runnable {
         this.pen = pen;
         this.paper = paper;
     }
-
+ 
     @Override
     public void run() {
         synchronized (pen){
