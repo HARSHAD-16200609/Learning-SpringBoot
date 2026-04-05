@@ -1,15 +1,17 @@
 public class LambdaExpressions {
     public static void main(String[] args) {
-        // This lambda is the Runnable task: each thread will execute this same block independently.
-        Runnable task = () -> {
-            // Print 5 iterations so you can see both threads interleave their output.
+        // a way to create a thread using lambda expression
+        Thread thread1 = new Thread(()->{
             for (int i = 0; i < 5; i++) {
                 System.out.println(Thread.currentThread().getName() + " is running iteration " + i);
             }
-        };
+        }, "Thread-1");
+        Thread thread2 = new Thread(()->{
+            for (int i = 0; i < 5; i++) {
+            System.out.println(Thread.currentThread().getName() + " is running iteration " + i);
+        }
 
-        Thread thread1 = new Thread(task, "Thread-1");
-        Thread thread2 = new Thread(task, "Thread-2");
+    }, "Thread-2");
 
         thread1.start();
         thread2.start();
