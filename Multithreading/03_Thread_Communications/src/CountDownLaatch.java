@@ -8,7 +8,7 @@ public class CountDownLaatch {
         // both way second way demonstrates the callback mechanism, where we can execute some code
         // when all the services
         // are up and running,
-        // in this case we are printing a message that applicatio
+        // in this case we are printing a message that application
         // n is ready to accept requests on port 5000
 //        CyclicBarrier barrier = new CyclicBarrier(n);
 
@@ -23,6 +23,7 @@ public class CountDownLaatch {
         executorService.submit(new KafkaService(barrier));
         // Main thread doesn't wait for these cylic barriers...
         System.out.println("Waiting for all services to be up and running... (Main)");
+        barrier.reset();
         executorService.shutdown();
     }
 }
