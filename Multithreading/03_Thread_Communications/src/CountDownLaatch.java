@@ -94,4 +94,15 @@ public class CountDownLaatch {
      }
  }
 
- // output
+ // Output
+// Connecting to MongoDB Server ap-south-1
+//Connecting to redis Server on port 26379 and initializing the cache...
+//Waiting for all services to be up and running... (Main)
+//Trying to connect to Kafka servers and initializing the queues..
+//Redis DB Server Connected...
+//Service waiting for the barrier
+//Kafka Servers Connected...
+//Service waiting for the barrier
+//DB Connected...
+//Service waiting for the barrier
+//All services are up and running, application is ready to accept requests... on port 5000
