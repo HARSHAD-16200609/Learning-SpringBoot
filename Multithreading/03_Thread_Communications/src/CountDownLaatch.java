@@ -1,18 +1,28 @@
-import java.util.concurrent.Callable;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 
 public class CountDownLaatch {
     public static void main(String []args) throws InterruptedException {
         int n = 3;
         ExecutorService executorService = Executors.newFixedThreadPool(n);
-        CountDownLatch latch = new CountDownLatch(n);
-        executorService.submit(new DatabaseService(latch));
-        executorService.submit(new RedisService(latch));
-        executorService.submit(new KafkaService(latch));
-        latch.await();
-        System.out.println("All services are up and running, application is ready to accept requests... on port 5000");
+
+        // both way second way demonstrates the callback mechanism, where we can execute some code
+        // when all the services
+        // are up and running,
+        // in this case we are printing a message that applicatio
+        // n is ready to accept requests on port 5000
+//        CyclicBarrier barrier = new CyclicBarrier(n);
+
+        CyclicBarrier barrier = new CyclicBarrier(n, new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("All services are up and running, application is ready to accept requests... on port 5000");
+            }
+        });
+        executorService.submit(new DatabaseService(barrier));
+        executorService.submit(new RedisService(barrier));
+        executorService.submit(new KafkaService(barrier));
+        // Main thread doesn't wait for these cylic barriers...
+        System.out.println("Waiting for all services to be up and running... (Main)");
         executorService.shutdown();
     }
 }
@@ -20,61 +30,67 @@ public class CountDownLaatch {
 
  class DatabaseService implements Callable<String> {
 
-    private CountDownLatch latch;
+    private CyclicBarrier barrier;
 
-     DatabaseService(CountDownLatch latch){
-        this.latch = latch;
+     DatabaseService(CyclicBarrier barrier){
+        this.barrier = barrier;
     }
 
 
      @Override
      public String call() throws  Exception  {
-         try {
+
              System.out.println("Connecting to MongoDB Server ap-south-1");
              Thread.sleep(8000);
-         }  finally {
-             latch.countDown(); // Decrement the latch count
-         }
+         System.out.println("DB Connected...");
+         System.out.println("Service waiting for the barrier");
+         barrier.await();
+
+
          return null;
      }
  }
  class RedisService implements Callable<String> {
 
-    private CountDownLatch latch;
+    private CyclicBarrier barrier;
 
-     RedisService(CountDownLatch latch){
-        this.latch = latch;
+     RedisService(CyclicBarrier barrier){
+        this.barrier = barrier;
     }
 
 
      @Override
      public String call() throws  Exception  {
-         try {
+
              System.out.println("Connecting to redis Server on port 26379 and initializing the cache...");
              Thread.sleep(4000);
-         }  finally {
-             latch.countDown(); // Decrement the latch count
-         }
+         System.out.println("Redis DB Server Connected...");
+
+         System.out.println("Service waiting for the barrier");
+         barrier.await();
          return null;
      }
  }
  class KafkaService implements Callable<String> {
 
-    private CountDownLatch latch;
+    private final CyclicBarrier barrier;
 
-     KafkaService(CountDownLatch latch){
-        this.latch = latch;
+     KafkaService(CyclicBarrier barrier){
+        this.barrier = barrier;
     }
 
 
      @Override
      public String call() throws  Exception  {
-         try {
+
              System.out.println("Trying to connect to Kafka servers and initializing the queues..");
              Thread.sleep(6000);
-         }  finally {
-             latch.countDown(); // Decrement the latch count
-         }
+         System.out.println("Kafka Servers Connected...");
+
+         System.out.println("Service waiting for the barrier");
+             barrier.await();
          return null;
      }
  }
+
+ // output
