@@ -8,7 +8,7 @@ public class WeakHashMapDemo {
         WeakHashMap<String, Image> imageCache = new WeakHashMap<>();
         loadCache(imageCache);
         System.out.println(imageCache);
-        System.gc();
+        System.gc(   );
         simulateApplicationRunning();
         System.out.println("Cache after running (some entries may be cleared): " + imageCache);
     }
