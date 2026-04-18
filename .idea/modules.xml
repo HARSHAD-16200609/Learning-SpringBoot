@@ -2,6 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/Collections_Framework/Collections_Framework.iml" filepath="$PROJECT_DIR$/Collections_Framework/Collections_Framework.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Java_Streams/Java_Streams.iml" filepath="$PROJECT_DIR$/Java_Streams/Java_Streams.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/SpringBoot.iml" filepath="$PROJECT_DIR$/.idea/SpringBoot.iml" />
     </modules>
   </component>

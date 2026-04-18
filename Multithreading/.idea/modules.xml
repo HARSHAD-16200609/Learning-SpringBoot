@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/02_Locks/..iml" filepath="$PROJECT_DIR$/02_Locks/..iml" />
+      <module fileurl="file://$PROJECT_DIR$/03_Thread_Communications/03_Thread_Communications.iml" filepath="$PROJECT_DIR$/03_Thread_Communications/03_Thread_Communications.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Practice/05_Practice.iml" filepath="$PROJECT_DIR$/Practice/05_Practice.iml" />
+      <module fileurl="file://$PROJECT_DIR$/05_Volatile_Atomic/05_Volatile_Atomic.iml" filepath="$PROJECT_DIR$/05_Volatile_Atomic/05_Volatile_Atomic.iml" />
+      <module fileurl="file://$PROJECT_DIR$/04_ExecutorFrameWork/ExecutorFrameWork.iml" filepath="$PROJECT_DIR$/04_ExecutorFrameWork/ExecutorFrameWork.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Multithreading.iml" filepath="$PROJECT_DIR$/Multithreading.iml" />
+    </modules>
+  </component>
+</project>
